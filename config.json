@@ -1,0 +1,12 @@
+{
+    "WiFi": [
+        {
+            "ssid": "wifi1", 
+            "psk": "pass1"
+        },
+        {
+            "ssid": "wifi2", 
+            "psk": "pass2"
+        },
+    ]    
+}

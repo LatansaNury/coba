@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "375016049626",
+    "firebase_url": "https://fireiot-313fc.firebaseio.com",
+    "project_id": "fireiot-313fc",
+    "storage_bucket": "fireiot-313fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375016049626:android:2aa7292699ed9ac5520ee3",
+        "android_client_info": {
+          "package_name": "com.example.coba"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375016049626-5nn2659s8jb3d6jfuug6vajhe051lk8o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD9nCm1h_0hYl5eX_YWqGOMemYaUIO2HA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375016049626-5nn2659s8jb3d6jfuug6vajhe051lk8o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375016049626:android:115fdd292058c186520ee3",
+        "android_client_info": {
+          "package_name": "com.example.fireiot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375016049626-rn7lnun2sgodnu0hprqme6iqe2t1u48e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fireiot",
+            "certificate_hash": "f10cf5a9f8e7b31439918df404888b0ede7737a1"
+          }
+        },
+        {
+          "client_id": "375016049626-5nn2659s8jb3d6jfuug6vajhe051lk8o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD9nCm1h_0hYl5eX_YWqGOMemYaUIO2HA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375016049626-5nn2659s8jb3d6jfuug6vajhe051lk8o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
