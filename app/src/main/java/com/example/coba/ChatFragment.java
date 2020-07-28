@@ -6,6 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.example.coba.Adapter.MyAdapter;
+import com.example.coba.Models.TitleChild;
+import com.example.coba.Models.TitleCreator;
+import com.example.coba.Models.TitleParent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +33,14 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    RecyclerView recyclerView;
+
+//    @Override
+//    public void onSaveInstanceState(@NonNull Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        ((MyAdapter)recyclerView.getAdapter()).onSaveInstanceState(outState);
+//    }
 
     public ChatFragment() {
         // Required empty public constructor
@@ -46,6 +65,21 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.myRecyclerView);
+        MyAdapter adapter = new MyAdapter(getContext(), initData());
+        adapter.setParentClickableViewAnimationDefaultDuration();
+        adapter.setParentAndIconExpandOnClick(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
+        return view;
+  //      return inflater.inflate(R.layout.fragment_chat, container, false);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -54,10 +88,19 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat, container, false);
+    private List<ParentObject> initData() {
+        TitleCreator titleCreator = TitleCreator.get(getActivity());
+        List<TitleParent> titles = titleCreator.getAll();
+        List<ParentObject> parentObject = new ArrayList<>();
+        for(TitleParent title:titles)
+        {
+            List<Object> childList = new ArrayList<>();
+            childList.add(new TitleChild("Add to contacts", "Send Message"));
+            title.setChildObjectList(childList);
+            parentObject.add(title);
+        }
+        return parentObject;
+
     }
+
 }

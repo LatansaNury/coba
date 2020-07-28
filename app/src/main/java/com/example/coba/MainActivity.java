@@ -5,8 +5,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.example.coba.Adapter.MyAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -14,9 +17,9 @@ public class MainActivity extends AppCompatActivity {
 
     ViewPager viewPAger;
     TabLayout tabLayout;
+    RecyclerView recyclerView;
 
     private static final String TAG = "fireiot";
-    TextView txtDetection;
     public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
     private final static String default_notification_channel_id = "default" ;
 
