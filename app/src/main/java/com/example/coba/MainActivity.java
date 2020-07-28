@@ -1,11 +1,13 @@
 package com.example.coba;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +43,14 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setText("Chat");
         tabLayout.getTabAt(1).setText("Call");
         tabLayout.getTabAt(2).setText("Status");
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.exit(0);
+            }
+        });
 //        FirebaseMessaging.getInstance().subscribeToTopic("android");
 //        myRef = database.getInstance().getReference().child("detection");
         widget();
