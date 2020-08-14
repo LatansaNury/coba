@@ -66,7 +66,6 @@ public class CallFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_call, container, false);
         txtDetection = (TextView) view.findViewById(R.id.txtDetection);
-        myRef = database.getInstance().getReference().child("detection");
         return view;
         //return inflater.inflate(R.layout.fragment_call, container, false);
 

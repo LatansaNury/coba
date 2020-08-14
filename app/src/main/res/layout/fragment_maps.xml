@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Detail Lokasi"
+            android:textSize="32dp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp" />
+    </LinearLayout>
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginTop="55dp"
+        tools:context=".MapsFragment"
+        tools:layout="@android:layout/simple_spinner_dropdown_item"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="410dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/TxtNamaLokasi"
+            android:text="Lokasi berada : "
+            android:textSize="14dp"
+            android:textAlignment="center"
+            android:layout_marginEnd="5dp"
+            android:gravity="center_horizontal"
+            android:layout_marginRight="5dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jarak"
+            android:id="@+id/TxtJarak"
+            android:textSize="14dp"
+            android:textAlignment="center"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+            android:layout_marginRight="5dp"/>
+    </LinearLayout>
+</FrameLayout>

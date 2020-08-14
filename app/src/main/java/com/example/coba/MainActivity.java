@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         PagerAdapter.addFragment(new ChatFragment());
         PagerAdapter.addFragment(new CallFragment());
-        PagerAdapter.addFragment(new StatusFragment());
+        PagerAdapter.addFragment(new MapsFragment());
 
         viewPAger = findViewById(R.id.viewpager);
         viewPAger.setAdapter(pagerAdapter);
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout.getTabAt(0).setText("Chat");
         tabLayout.getTabAt(1).setText("Call");
-        tabLayout.getTabAt(2).setText("Status");
+        tabLayout.getTabAt(2).setText("Maps");
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
