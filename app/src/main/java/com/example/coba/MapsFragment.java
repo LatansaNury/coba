@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -33,7 +35,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.SphericalUtil;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 public class MapsFragment extends Fragment {
     private GoogleMap mMap;
@@ -43,7 +48,7 @@ public class MapsFragment extends Fragment {
     private LocationManager locationManager;
     private final long MIN_TIME = 1000;
     private final long MIN_DIST = 5;
-    TextView txtJarak;
+    TextView txtJarak, TxtNamaLokasi;
     FusedLocationProviderClient mFusedLocation;
     GoogleApiClient mGoogleApiClient;
 
@@ -81,11 +86,12 @@ public class MapsFragment extends Fragment {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Double databaseLatitudeString = dataSnapshot.child("latitude").getValue(Double.class);
-                            Double databaseLongitudedeString = dataSnapshot.child("longitude").getValue(Double.class);
-                            LatLng latLng = new LatLng(databaseLatitudeString, databaseLongitudedeString);
+                            Double databaseLongitudeString = dataSnapshot.child("longitude").getValue(Double.class);
+                            LatLng latLng = new LatLng(databaseLatitudeString, databaseLongitudeString);
                             LatLng currentlatlang = new LatLng(location.getLatitude(), location.getLongitude());
                             Double distance = SphericalUtil.computeDistanceBetween(latLng, currentlatlang);
                             txtJarak.setText(String.format("%.2f",distance/1000));
+                            getAddress(databaseLatitudeString, databaseLongitudeString);
                         }
 
                         @Override
@@ -106,6 +112,7 @@ public class MapsFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_maps, container, false);
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
         txtJarak = (TextView) view.findViewById(R.id.TxtJarak);
+        TxtNamaLokasi = (TextView) view.findViewById(R.id.TxtNamaLokasi);
         return view;
     }
 
@@ -134,6 +141,8 @@ public class MapsFragment extends Fragment {
                 mMap.addMarker(new MarkerOptions().position(latLng).title(databaseLatitudeString + " , " + databaseLongitudeString));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+
+                getAddress(databaseLatitudeString, databaseLongitudeString);
             }
 
             @Override
@@ -141,5 +150,18 @@ public class MapsFragment extends Fragment {
 
             }
         });
+    }
+
+    private void getAddress(Double databaseLatitudeString, Double databaseLongitudeString) {
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        try {
+            List<Address> addresseses = geocoder.getFromLocation(databaseLatitudeString, databaseLongitudeString, 1);
+            Address obj = addresseses.get(0);
+            String add = obj.getAddressLine(0);
+            TxtNamaLokasi.setText(add);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
