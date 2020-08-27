@@ -36,7 +36,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.SphericalUtil;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,6 +50,7 @@ public class MapsFragment extends Fragment {
     TextView txtJarak, TxtNamaLokasi;
     FusedLocationProviderClient mFusedLocation;
     GoogleApiClient mGoogleApiClient;
+ //   Double latitude, longitude;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -66,9 +66,6 @@ public class MapsFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
-//            LatLng sydney = new LatLng(-34, 151);
-//            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -113,6 +110,8 @@ public class MapsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
         txtJarak = (TextView) view.findViewById(R.id.TxtJarak);
         TxtNamaLokasi = (TextView) view.findViewById(R.id.TxtNamaLokasi);
+//        latitude = getArguments().getDouble("latitude");
+//        longitude = getArguments().getDouble("longitude");
         return view;
     }
 
@@ -127,6 +126,15 @@ public class MapsFragment extends Fragment {
 
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
         mFusedLocation = LocationServices.getFusedLocationProviderClient(getActivity());
+        if(mMap != null)
+                {
+                    mMap.clear();
+                }
+//        LatLng latLng = new LatLng(latitude, longitude);
+//        mMap.addMarker(new MarkerOptions().position(latLng).title(latitude + " , " + longitude));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+//        getAddress(databaseLatitudeString, databaseLongitudeString);
         databaseReference = FirebaseDatabase.getInstance().getReference("lokasi");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -151,6 +159,19 @@ public class MapsFragment extends Fragment {
             }
         });
     }
+
+//    private void getAddress() {
+//        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+//        try {
+//            List<Address> addresseses = geocoder.getFromLocation(latitude, longitude, 1);
+//            Address obj = addresseses.get(0);
+//            String add = obj.getAddressLine(0);
+//            TxtNamaLokasi.setText(add);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private void getAddress(Double databaseLatitudeString, Double databaseLongitudeString) {
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());

@@ -3,28 +3,131 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/idcallfrg"
     tools:context=".CallFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
-        <TextView
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fall Detection"
-            android:id="@+id/txtJudul"
+            android:orientation="vertical"
+            android:background="#DFF2FF"
+            android:padding="20dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:fontFamily="@font/lithospro"
+                android:textColor="#6F88EC"
+                android:id="@+id/txtDetection"
+                android:textSize="24dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:fontFamily="@font/soegeui"
+                android:textSize="16dp"
+                android:textColor="#3A3A3A"
+                android:textStyle="bold"
+                android:id="@+id/txtPosisiJatuh"
+                android:gravity="center"
+                android:layout_marginTop="10dp"/>
+            <Button
+                android:id="@+id/ButtonOk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ok"
+                android:background="@drawable/buttonok"
+                android:layout_marginLeft="280dp"
+                android:onClick="HideFall"
+                android:visibility="gone"
+                tools:ignore="OnClick" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_marginTop="8dp"
-            android:gravity="center"/>
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="----"
-            android:id="@+id/txtDetection"
-            android:gravity="center"
-            android:layout_marginTop="5dp"/>
+            android:orientation="vertical"
+            android:background="#DFF2FF">
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/lithospro"
+                android:textColor="#3A3A3A"
+                android:textSize="12dp"
+                android:text="Berada di :"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:id="@+id/txtPosisiRuangan"
+                android:fontFamily="@font/soegeui"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:textColor="#3A3A3A"
+                android:text=""/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            android:background="#DFF2FF">
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Posisi :"
+                android:fontFamily="@font/lithospro"
+                android:textSize="12dp"
+                android:textColor="#3A3A3A"/>
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtLokasi"
+                android:gravity="center"
+                android:text=""
+                android:fontFamily="@font/soegeui"
+                android:textSize="16dp"
+                android:textColor="#3A3A3A"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtJarak"
+                android:gravity="center"
+                android:text=""
+                android:fontFamily="@font/soegeui"
+                android:textSize="16dp"
+                android:textColor="#3A3A3A"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtWaktuTempuh"
+                android:gravity="center"
+                android:text=""
+                android:fontFamily="@font/soegeui"
+                android:textSize="16dp"
+                android:textColor="#3A3A3A"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </FrameLayout>

@@ -1,10 +1,19 @@
 package com.example.coba;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -12,12 +21,20 @@ import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.coba.Adapter.MyAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
 
     ViewPager viewPAger;
     TabLayout tabLayout;
     RecyclerView recyclerView;
+    DatabaseReference myRef;
 
     private static final String TAG = "fireiot";
     public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
@@ -32,28 +49,52 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        PagerAdapter.addFragment(new ChatFragment());
-        PagerAdapter.addFragment(new CallFragment());
-        PagerAdapter.addFragment(new MapsFragment());
+        String userToken = FirebaseInstanceId.getInstance().getToken();
+        FirebaseMessaging.getInstance().subscribeToTopic("android");
+        Log.d(TAG, "tokenFCM: "+userToken);
 
-        viewPAger = findViewById(R.id.viewpager);
-        viewPAger.setAdapter(pagerAdapter);
+        if(savedInstanceState == null){
+            PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+            PagerAdapter.addFragment(new CallFragment());
+            PagerAdapter.addFragment(new ChatFragment());
+            PagerAdapter.addFragment(new MapsFragment());
 
-        tabLayout = findViewById(R.id.tab);
-        tabLayout.setupWithViewPager(viewPAger);
+            viewPAger = findViewById(R.id.viewpager);
+            viewPAger.setAdapter(pagerAdapter);
 
-        tabLayout.getTabAt(0).setText("Chat");
-        tabLayout.getTabAt(1).setText("Call");
-        tabLayout.getTabAt(2).setText("Maps");
+            tabLayout = findViewById(R.id.tab);
+            tabLayout.setupWithViewPager(viewPAger);
+
+            tabLayout.getTabAt(0).setText("Utama");
+            tabLayout.getTabAt(1).setText("History");
+            tabLayout.getTabAt(2).setText("Maps");
+        }
+
+//        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+//        PagerAdapter.addFragment(new CallFragment());
+//        PagerAdapter.addFragment(new ChatFragment());
+//        PagerAdapter.addFragment(new MapsFragment());
+//
+//        viewPAger = findViewById(R.id.viewpager);
+//        viewPAger.setAdapter(pagerAdapter);
+//
+//        tabLayout = findViewById(R.id.tab);
+//        tabLayout.setupWithViewPager(viewPAger);
+//
+//        tabLayout.getTabAt(0).setText("Utama");
+//        tabLayout.getTabAt(1).setText("History");
+//        tabLayout.getTabAt(2).setText("Maps");
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.exit(0);
+     //           Intent i = new Intent(MainActivity.this, Notif.class);
+      //          startActivity(i);
             }
         });
+
 //        FirebaseMessaging.getInstance().subscribeToTopic("android");
 //        myRef = database.getInstance().getReference().child("detection");
         widget();

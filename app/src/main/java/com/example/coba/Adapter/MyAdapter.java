@@ -4,6 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
@@ -14,16 +18,57 @@ import com.example.coba.R;
 import com.example.coba.ViewHolders.TitleChildViewHolder;
 import com.example.coba.ViewHolders.TitleParentViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
+//public class MyAdapter extends RecyclerView.Adapter<MyAdapter.TitleChildViewHolder>{
+//
+//    public List<TitleChild> list;
+//
+//
+//
+//    @NonNull
+//    @Override
+//    public TitleChildViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//        return new TitleChildViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_child, parent, false));
+//    }
+//
+//    @Override
+//    public void onBindViewHolder(@NonNull TitleChildViewHolder holder, int position) {
+//        TitleChild title = list.get(position);
+//        holder.text_date.setText(title.itemDate);
+//        holder.text_time.setText(title.itemTime);
+//
+//    }
+//
+//    @Override
+//    public int getItemCount() {
+//        return list.size();
+//    }
+//
+//    class TitleChildViewHolder extends RecyclerView.ViewHolder {
+//        TextView text_date, text_time;
+//
+//        public TitleChildViewHolder (View view){
+//            super(view);
+//            text_date = (TextView) view.findViewById(R.id.text_date);
+//            text_time = (TextView) view.findViewById(R.id.text_time);
+//        }
+//    }
+//
+//}
 public class MyAdapter extends ExpandableRecyclerAdapter<TitleParentViewHolder, TitleChildViewHolder> {
 
     LayoutInflater inflater;
-
     public MyAdapter(Context context, List<ParentObject> parentItemList) {
         super(context, parentItemList);
         inflater = LayoutInflater.from(context);
     }
+
+//    public MyAdapter(List<Object> context, Context parentItemList) {
+//        super(context, parentItemList);
+//        inflater = LayoutInflater.from(context);
+//    }
 
     @Override
     public TitleParentViewHolder onCreateParentViewHolder(ViewGroup viewGroup) {
