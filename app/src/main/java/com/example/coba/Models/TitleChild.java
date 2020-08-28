@@ -11,7 +11,7 @@ public class TitleChild {
 //        this.itemDate = itemDate;
 //        this.itemTime = itemTime;
 //    }
-        public String option1;
+    public String option1;
     public String option2;
 
     public TitleChild(String option1, String option2) {

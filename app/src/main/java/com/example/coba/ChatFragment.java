@@ -1,6 +1,7 @@
 package com.example.coba;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,33 +102,15 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         myRef = FirebaseDatabase.getInstance().getReference("history");
-    }
-
-
-    private List<ParentObject> initData() {
-        TitleCreator titleCreator = TitleCreator.get(getActivity());
-        final List<TitleParent> titles = titleCreator.getAll();
-        final List<ParentObject> parentObject = new ArrayList<>();
-
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                TitleChild titlelist = snapshot.getValue(TitleChild.class);
-                adapter.notifyDataSetChanged();
-                //childList.add(title);
-                for(TitleParent title:titles)
-                {
-                    childList.add(titlelist);
-                    //childList.add(new TitleChild("date", "time"));
-                    title.setChildObjectList(childList);
-                    parentObject.add(title);
-                }
+                String k = "" + snapshot.getValue();
+                Log.d("datafirebase", k);
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                TitleChild title = snapshot.getValue(TitleChild.class);
-                childList.add(title);
 
             }
 
@@ -146,6 +129,51 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
 
             }
         });
+    }
+
+
+    private List<ParentObject> initData() {
+        TitleCreator titleCreator = TitleCreator.get(getActivity());
+        final List<TitleParent> titles = titleCreator.getAll();
+        final List<ParentObject> parentObject = new ArrayList<>();
+
+//        myRef.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                TitleChild titlelist = snapshot.getValue(TitleChild.class);
+//                adapter.notifyDataSetChanged();
+//                //childList.add(title);
+//                for(TitleParent title:titles)
+//                {
+//                    childList.add(titlelist);
+//                    //childList.add(new TitleChild("date", "time"));
+//                    title.setChildObjectList(childList);
+//                    parentObject.add(title);
+//                }
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                TitleChild title = snapshot.getValue(TitleChild.class);
+//                childList.add(title);
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
         return parentObject;
 
     }
