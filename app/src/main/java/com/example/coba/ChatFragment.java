@@ -1,11 +1,9 @@
 package com.example.coba;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.coba.Adapter.MyAdapter;
-import com.example.coba.Models.TitleChild;
+import com.example.coba.Models.HistoryFall;
 import com.example.coba.Models.TitleCreator;
 import com.example.coba.Models.TitleParent;
 import com.google.firebase.database.ChildEventListener;
@@ -23,7 +21,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +46,7 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
     DatabaseReference myRef = database.getReference();
     MyAdapter adapter;
     List<Object> childList = new ArrayList<>();
+    ArrayList<HistoryFall> histories;
 
 //    @Override
 //    public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -84,14 +82,14 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.myRecyclerView);
-   //     adapter = new MyAdapter(childList, getContext());
+        //     adapter = new MyAdapter(childList, getContext());
         adapter = new MyAdapter(getContext(), initData());
         adapter.setParentClickableViewAnimationDefaultDuration();
         adapter.setParentAndIconExpandOnClick(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         return view;
-  //      return inflater.inflate(R.layout.fragment_chat, container, false);
+        //      return inflater.inflate(R.layout.fragment_chat, container, false);
     }
 
     @Override
@@ -105,12 +103,14 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                String k = "" + snapshot.getValue();
-                Log.d("datafirebase", k);
+                histories = new ArrayList<>();
+                HistoryFall item = snapshot.getValue(HistoryFall.class);
+                histories.add(item);
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
 
             }
 
@@ -136,60 +136,18 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
         TitleCreator titleCreator = TitleCreator.get(getActivity());
         List<TitleParent> titles = titleCreator.getAll();
         List<ParentObject> parentObject = new ArrayList<>();
-        for(TitleParent title:titles)
-        {
-            List<Object> childList = new ArrayList<>();
-            childList.add(new TitleChild("Add to contacts", "Send Message"));
-            title.setChildObjectList(childList);
+        for (TitleParent title : titles) {
             parentObject.add(title);
         }
 
-//        myRef.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                TitleChild titlelist = snapshot.getValue(TitleChild.class);
-//                adapter.notifyDataSetChanged();
-//                //childList.add(title);
-//                for(TitleParent title:titles)
-//                {
-//                    childList.add(titlelist);
-//                    //childList.add(new TitleChild("date", "time"));
-//                    title.setChildObjectList(childList);
-//                    parentObject.add(title);
-//                }
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                TitleChild title = snapshot.getValue(TitleChild.class);
-//                childList.add(title);
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
         return parentObject;
 
     }
 
-    private void UpdateList(){
+    private void UpdateList() {
 
     }
 
 
-
- }
+}
 

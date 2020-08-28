@@ -16,11 +16,6 @@ public class TitleCreator {
         _titleParent.add(new TitleParent("2 Minggu Terakhir"));
         _titleParent.add(new TitleParent("1 Bulan Terakhir"));
         _titleParent.add(new TitleParent("6 Bulan Terakhir"));
-//        for (int i =1; i<=100; i++)
-//        {
-//            TitleParent title = new TitleParent(String.format("Caller #%d", i));
-//            _titleParent.add(title);
-//        }
     }
 
     public static TitleCreator get(Context context) {

@@ -16,11 +16,8 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +27,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
@@ -47,7 +43,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.SphericalUtil;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -55,7 +50,6 @@ import java.util.Locale;
  * A simple {@link Fragment} subclass.
  * Use the {@link CallFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
 public class CallFragment extends Fragment {
 
@@ -127,6 +121,7 @@ public class CallFragment extends Fragment {
         return view;
         //return inflater.inflate(R.layout.fragment_call, container, false);
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -229,6 +224,8 @@ public class CallFragment extends Fragment {
                 mFusedLocation.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
+                        if (location == null) return;
+                        if (Latitude != null || Longitude != null) return;
                         LatLng latLng = new LatLng(Latitude, Longitude);
                         LatLng currentlatlang = new LatLng(location.getLatitude(), location.getLongitude());
                         Double distance = SphericalUtil.computeDistanceBetween(latLng, currentlatlang);
@@ -236,7 +233,7 @@ public class CallFragment extends Fragment {
                         float estimateDriveTime = distance.floatValue() / speed40kmperjam;
                         int hours = (int) estimateDriveTime / 60;
                         int minutes = (int) estimateDriveTime % 60;
-                        txtWaktuTempuh.setText("Estimasi waktu tempuh : "+ hours + " Jam " + minutes + " Menit");
+                        txtWaktuTempuh.setText("Estimasi waktu tempuh : " + hours + " Jam " + minutes + " Menit");
                         txtJarak.setText(String.format("Jarak(Km) : %.2f", distance / 1000));
                     }
                 });
@@ -265,7 +262,7 @@ public class CallFragment extends Fragment {
             mChannel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000, 1000, 1000, 1000});
             mChannel.enableVibration(true);
             notificationManager.createNotificationChannel(mChannel);
-          //  v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+            //  v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
         }
 //        else {
 //            v.vibrate(500);
@@ -277,7 +274,7 @@ public class CallFragment extends Fragment {
         PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity(),NOTIFICATION_CHANNEL_ID);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity(), NOTIFICATION_CHANNEL_ID);
         builder.setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher_foreground))
@@ -290,9 +287,9 @@ public class CallFragment extends Fragment {
                 .setContentText("by imamfarisi.com")
                 .setPriority(NotificationCompat.PRIORITY_MAX);
         notificationManager.notify(115, builder.build());
-        }
+    }
 
-    private void HideFall(View view){
+    private void HideFall(View view) {
         txtDetection.clearAnimation();
         animator.cancel();
         animator.end();
@@ -311,13 +308,13 @@ public class CallFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String posisi = dataSnapshot.child("posisi").getValue(String.class);
                 String posisinormal = "Normal";
-                if (posisi.equals(posisinormal)){
+                if (posisi.equals(posisinormal)) {
                     txtPosisiJatuh.setText("");
-                }
-                else {
+                } else {
                     txtPosisiJatuh.setText(posisi);
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
