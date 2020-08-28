@@ -134,8 +134,15 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
 
     private List<ParentObject> initData() {
         TitleCreator titleCreator = TitleCreator.get(getActivity());
-        final List<TitleParent> titles = titleCreator.getAll();
-        final List<ParentObject> parentObject = new ArrayList<>();
+        List<TitleParent> titles = titleCreator.getAll();
+        List<ParentObject> parentObject = new ArrayList<>();
+        for(TitleParent title:titles)
+        {
+            List<Object> childList = new ArrayList<>();
+            childList.add(new TitleChild("Add to contacts", "Send Message"));
+            title.setChildObjectList(childList);
+            parentObject.add(title);
+        }
 
 //        myRef.addChildEventListener(new ChildEventListener() {
 //            @Override
