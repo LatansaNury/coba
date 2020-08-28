@@ -1,5 +1,9 @@
 package com.example.coba.Models;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class HistoryFall {
 
     String day;
@@ -27,5 +31,13 @@ public class HistoryFall {
 
     public void setHour(String hour) {
         this.hour = hour;
+    }
+
+    public Date getDate() {
+        try {
+            return new SimpleDateFormat("dd / MM / yyyy").parse(day);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 }
