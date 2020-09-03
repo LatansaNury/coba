@@ -1,15 +1,10 @@
 package com.example.coba;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,7 +50,12 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
     DatabaseReference myRef = database.getReference();
     MyAdapter adapter;
     List<Object> childList = new ArrayList<>();
-    ArrayList<HistoryFall> histories;
+    ArrayList<HistoryFall> histories = new ArrayList<>();
+    ArrayList<HistoryFall> historiesTwoWeek  = new ArrayList<>();
+    ArrayList<HistoryFall> historiesTwoMonth  = new ArrayList<>();
+    ArrayList<HistoryFall> historiesSixMonth = new ArrayList<>();
+    List<ParentObject> parentObject = new ArrayList<>();
+
 
 //    @Override
 //    public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -88,8 +91,13 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.myRecyclerView);
-        //     adapter = new MyAdapter(childList, getContext());
-        adapter = new MyAdapter(getContext(), initData());
+
+        historiesTwoWeek = new ArrayList<>();
+        historiesTwoMonth = new ArrayList<>();
+        historiesSixMonth = new ArrayList<>();
+
+        parentObject = initData();
+        adapter = new MyAdapter(getContext(),parentObject );
         adapter.setParentClickableViewAnimationDefaultDuration();
         adapter.setParentAndIconExpandOnClick(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -112,6 +120,10 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
                 histories = new ArrayList<>();
                 HistoryFall item = snapshot.getValue(HistoryFall.class);
                 histories.add(item);
+                groupItemsByDate();
+                parentObject = initData();
+                adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -138,21 +150,43 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
     }
 
 
+    private void groupItemsByDate() {
+        for (HistoryFall historyFall : histories) {
+            long diffInMillisec = getCurrentDate().getTime() - historyFall.getDate().getTime();
+            long diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillisec);;
+            if (diffInDays < 14) {
+                historiesTwoWeek.add(historyFall);
+            } else if (diffInDays < 60) {
+                historiesTwoMonth.add(historyFall);
+            } else {
+                historiesSixMonth.add(historyFall);
+            }
+        }
+    }
+
 
     private List<ParentObject> initData() {
         TitleCreator titleCreator = TitleCreator.get(getActivity());
         List<TitleParent> titles = titleCreator.getAll();
         List<ParentObject> parentObject = new ArrayList<>();
-        for (TitleParent title : titles) {
-            parentObject.add(title);
+        for (int i = 0; i< titles.size();i++) {
+            List<Object> childList = new ArrayList<>();
+            if (i==0) {
+                childList.addAll(historiesTwoWeek);
+                titles.get(i).setChildObjectList(childList);
+            }else if (i==1) {
+                childList.addAll(historiesTwoMonth);
+            }else{
+                childList.addAll(historiesSixMonth);
+            }
+            titles.get(i).setChildObjectList(childList);
+            parentObject.add(titles.get(i));
         }
-
         return parentObject;
-
     }
 
-    private void UpdateList() {
-
+    private Date getCurrentDate() {
+        return Calendar.getInstance().getTime();
     }
 
 
