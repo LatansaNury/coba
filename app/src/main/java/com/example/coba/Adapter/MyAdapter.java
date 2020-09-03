@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.example.coba.ChatFragment;
+import com.example.coba.Models.HistoryFall;
 import com.example.coba.Models.TitleChild;
 import com.example.coba.Models.TitleParent;
 import com.example.coba.R;
@@ -90,8 +91,8 @@ public class MyAdapter extends ExpandableRecyclerAdapter<TitleParentViewHolder, 
 
     @Override
     public void onBindChildViewHolder(TitleChildViewHolder titleChildViewHolder, int i, Object o) {
-        TitleChild title = (TitleChild)o;
-        titleChildViewHolder.option1.setText(title.getOption1());
-        titleChildViewHolder.option2.setText(title.getOption2());
+        HistoryFall title = (HistoryFall) o;
+        titleChildViewHolder.option1.setText(title.getDay());
+        titleChildViewHolder.option2.setText(title.getHour());
     }
 }
