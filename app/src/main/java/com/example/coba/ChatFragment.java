@@ -4,6 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -130,6 +136,7 @@ public class ChatFragment extends androidx.fragment.app.Fragment {
             }
         });
     }
+
 
 
     private List<ParentObject> initData() {
