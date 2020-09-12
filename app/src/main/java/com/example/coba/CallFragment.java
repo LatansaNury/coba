@@ -43,8 +43,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.SphericalUtil;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+
+import static java.lang.Float.parseFloat;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -110,7 +113,6 @@ public class CallFragment extends Fragment {
         txtDetection.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
         fallDetect();
         getLokasi();
-        getDistance();
         getPosisiRuangan();
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,17 +186,18 @@ public class CallFragment extends Fragment {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Double Latitude = dataSnapshot.child("latitude").getValue(Double.class);
-                Double Longitude = dataSnapshot.child("longitude").getValue(Double.class);
-                Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-                try {
-                    List<Address> addresseses = geocoder.getFromLocation(Latitude, Longitude, 1);
-                    Address obj = addresseses.get(0);
-                    String add = obj.getAddressLine(0);
-                    txtLokasi.setText(add);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                //String databaseLatitudeString = dataSnapshot.child("latitude").getValue().toString().substring(1, dataSnapshot.child("latitude").getValue().toString().length()-1);
+                //String databaseLongitudedeString = dataSnapshot.child("longitude").getValue().toString().substring(1, dataSnapshot.child("longitude").getValue().toString().length()-1);
+                String databaseLatitudeString = dataSnapshot.child("latitude").getValue(String.class);
+                String databaseLongitudedeString = dataSnapshot.child("longitude").getValue(String.class);
+                String[] stringLat = databaseLatitudeString.split(", ");
+                Arrays.sort(stringLat);
+                String latitude = stringLat[stringLat.length-1].split("=")[0];
+                String[] stringLong = databaseLongitudedeString.split(", ");
+                Arrays.sort(stringLong);
+                String longitude = stringLong[stringLong.length-1].split("=")[0];
+                LokasiName(Double.parseDouble(latitude), Double.parseDouble(longitude), databaseLatitudeString, databaseLongitudedeString);
+                GetDistance(Double.parseDouble(latitude), Double.parseDouble(longitude));
             }
 
             @Override
@@ -204,44 +207,42 @@ public class CallFragment extends Fragment {
         });
     }
 
-    private void getDistance() {
-        myRef = FirebaseDatabase.getInstance().getReference("lokasi");
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                final Double Latitude = dataSnapshot.child("latitude").getValue(Double.class);
-                final Double Longitude = dataSnapshot.child("longitude").getValue(Double.class);
-                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                mFusedLocation.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location == null) return;
-                        if (Latitude != null || Longitude != null) return;
-                        LatLng latLng = new LatLng(Latitude, Longitude);
-                        LatLng currentlatlang = new LatLng(location.getLatitude(), location.getLongitude());
-                        Double distance = SphericalUtil.computeDistanceBetween(latLng, currentlatlang);
-                        int speed40kmperjam = 667;
-                        float estimateDriveTime = distance.floatValue() / speed40kmperjam;
-                        int hours = (int) estimateDriveTime / 60;
-                        int minutes = (int) estimateDriveTime % 60;
-                        txtWaktuTempuh.setText("Estimasi waktu tempuh : " + hours + " Jam " + minutes + " Menit");
-                        txtJarak.setText(String.format("Jarak(Km) : %.2f", distance / 1000));
-                    }
-                });
-            }
+    private void LokasiName(double latitude, double longitude, String databaseLatitudeString, String databaseLongitudedeString) {
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        try {
+            List<Address> addresseses = geocoder.getFromLocation(latitude, longitude, 1);
+            Address obj = addresseses.get(0);
+            String add = obj.getAddressLine(0);
+            txtLokasi.setText(add);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void GetDistance(final double latitude, final double longitude) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mFusedLocation.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onSuccess(Location location) {
+                if (location == null) return;
+                LatLng latLng = new LatLng(latitude, longitude);
+                LatLng currentlatlang = new LatLng(location.getLatitude(), location.getLongitude());
+                Double distance = SphericalUtil.computeDistanceBetween(latLng, currentlatlang);
+                int speed40kmperjam = 667;
+                float estimateDriveTime = distance.floatValue() / speed40kmperjam;
+                int hours = (int) estimateDriveTime / 60;
+                int minutes = (int) estimateDriveTime % 60;
+                txtWaktuTempuh.setText("Estimasi waktu tempuh : " + hours + " Jam " + minutes + " Menit");
+                txtJarak.setText(String.format("Jarak(Km) : %.2f", distance / 1000));
             }
         });
     }
