@@ -30,15 +30,17 @@ public class MessagingService extends FirebaseMessagingService {
 //        String messageTitle = remoteMessage.getNotification().getTitle();
 //        String messageBody = remoteMessage.getNotification().getBody();
         Log.d("sfs", "onMessageReceived: "+remoteMessage.getNotification());
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        long[] v = {500, 1000};
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-        builder.setContentTitle("Warning")
+        builder.setContentTitle(messageTitle)
                 .setContentText("Fall Detected!!!")
                 .setSound(defaultSoundUri)
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.notification_icon)
                 .setVibrate(new long[]{Notification.DEFAULT_VIBRATE})
                 .setPriority(Notification.PRIORITY_MAX);
+        //.setVibrate(new long[]{Notification.DEFAULT_VIBRATE})
 
         Intent resultIntent = new Intent(this, Notif.class);
         PendingIntent pendingIntent = PendingIntent
@@ -56,7 +58,10 @@ public class MessagingService extends FirebaseMessagingService {
         }
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         assert notificationManager != null;
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+        Notification mNotifi = builder.build();
+        mNotifi.flags |= Notification.FLAG_INSISTENT;
+        notificationManager.notify(NOTIFICATION_ID, mNotifi);
+        //notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
 //    @Override
