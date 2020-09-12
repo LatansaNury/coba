@@ -19,12 +19,12 @@ exports.sendNotification = functions.database.ref('/sensor/{detection}')
         const topic = "android";
         const payload = {
             data: {
-                title: "tes",
+                title: detection,
                 body: "tesss"
             }
         };
 
-	if (detection == "Fall") {
+	if (detection == "Warning" || detection == "Fall") {
 	// Send a message to devices subscribed to the provided topic.
         return admin.messaging().sendToTopic(topic, payload)
             .then(function (response) {
@@ -36,5 +36,5 @@ exports.sendNotification = functions.database.ref('/sensor/{detection}')
             .catch(function (error) {
                 console.log("Error sending message:", error);
             });
-	}
+    }
         });
